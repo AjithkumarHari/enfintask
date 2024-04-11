@@ -1,0 +1,105 @@
+<div class="w-11/12 mx-auto ">
+    <div class="mx-auto px-3">
+        <div class="mt-4 w-full">
+            <div class="flex w-full flex-col items-center justify-between space-y-2 sm:flex-row sm:space-y-0">
+                <form class="relative flex w-full max-w-2xl items-center">
+                    <svg class="absolute left-2 block h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
+                        width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8" class=""></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" class=""></line>
+                    </svg>
+                    <input type="name" name="search"
+                    [(ngModel)]="searchText" (input)="onSearchText()" (keyup.backspace)="onSearchText()"
+                        class="h-12 w-full border-b-gray-400 bg-transparent py-4 pl-12 text-sm outline-none focus:border-b-2"
+                        placeholder="Search by Order ID, Date, Customer" />
+                </form>
+
+                <button type="button"
+                    (click)=onAddClicked()
+                    class="relative mr-auto inline-flex cursor-pointer items-center rounded-xl border border-gray-200 bg-white px-5 py-2 text-center  font-bold text-gray-800 hover:bg-gray-100 focus:shadow sm:mr-0">
+                    Add Book
+                </button>
+            </div>
+        </div>
+
+        <div class="mt-6 overflow-hidden rounded-xl bg-white px-6 shadow lg:px-4"  *ngIf="books.length>0 ; else noDate">
+            <table class="min-w-full border-collapse border-spacing-y-2 border-spacing-x-2">
+                <thead class="hidden border-b lg:table-header-group">
+                    <tr class="">
+                        <td class="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-3">Name</td>
+                        <td class="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-3">Description</td>
+                        <td class="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-3">Published Date</td>
+                        <td class="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-3">Price</td>
+                        <td class="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-3">Edit</td>
+                        <td class="whitespace-normal py-4 text-sm font-medium text-gray-500 sm:px-3">Delete</td>
+                    </tr>
+                </thead>
+
+                <tbody class="bg-white lg:border-gray-300">
+                    <tr class="" *ngFor="let book of books | slice: currentPage * 6 - 6 : currentPage * 6"> 
+                        <td class="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-600 sm:px-3 lg:table-cell">
+                            {{book.name}}
+                        </td>
+                        <td
+                            class="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-600 sm:px-3 lg:table-cell">
+                            {{book.description}}
+                        </td>
+                        <td
+                            class="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-600 sm:px-3 lg:table-cell">
+                            {{book.publishDate}}
+                        </td>
+                        <td
+                            class="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-600 sm:px-3 lg:table-cell">
+                            {{book.price}}
+                        </td>
+                        <td
+                            (click)="onEdit(book)"
+                            class="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-600 sm:px-3 lg:table-cell">
+                            <i class="fa-regular fa-pen-to-square"></i> 
+                        </td>
+                        <td
+                            (click)="onDelete(book._id)"
+                            class="whitespace-no-wrap hidden py-4 text-sm font-normal text-gray-600 sm:px-3 lg:table-cell">
+                            <i class="fa-solid fa-trash"></i>
+                        </td>
+                    </tr> 
+                </tbody>
+            </table>
+            <div *ngIf="books.length>7" class="flex justify-center">
+                <nav class=" my-" aria-label="Page navigation example">
+                    <ul class="inline-flex -space-x-px text-base font-semibold h-11">
+                        <li>
+                            <a (click)="onPrevious($event)"
+                            class="flex items-center border-2 border-transparent justify-center px-5 h-11  ms-0 leading-tight text-black  hover:bg-[#0000004b] hover:border-gray-800  rounded-lg ">
+                                Previous
+                            </a>
+                        </li>
+                
+                        <ng-container *ngFor="let page of pages">
+                            <li>
+                                <a (click)="onPageClick(page)"
+                                    class="flex items-center justify-center mx-2 px-4 h-11 leading-tight text-black rounded-xl  border-2  hover:border-gray-800 border-transparent"
+                                    [ngClass]="{'bg-[#8693c7]': page === currentPage}"
+                                >
+                                    {{ page }}
+                                </a>
+                            </li>
+                        </ng-container>
+                        
+                        <li>
+                            <a (click)="onNext($event)"
+                            class="flex items-center border-2 border-transparent justify-center px-5 h-11  ms-0 leading-tight text-black  hover:bg-[#0000004b] hover:border-gray-300  rounded-lg ">
+                            Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <ng-template #noDate>
+            <div class="w-full flex justify-center mt-32">
+                <h1 class="text-[#143601] text-5xl font-extrabold">No Data Available</h1>
+            </div>
+        </ng-template>
+    </div>
+</div>

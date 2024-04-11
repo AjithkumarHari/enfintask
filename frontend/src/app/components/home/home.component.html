@@ -1,0 +1,17 @@
+<div>
+    <h1 class="text-white text-5xl pl-20 py-5">Enfin Books</h1>
+</div>
+<app-book-list 
+    (onAddBook)="addBook()"
+    [books]="books" 
+    [count]="books.length" 
+    (onSearchTextChanged)="onBooksSeachFilter($event)"
+    (onDeleteTask)="deleteTask($event)" 
+     (onEditTask)="editTask($event)">
+</app-book-list>
+<div *ngIf="add">
+    <app-add-book (onCancel)="cancelAddBox()" (onCreated)="afterAddTask()"></app-add-book>
+</div>
+<div *ngIf="edit">
+    <app-edit-task [task]="taskForEdit" (onCancel)="cancelEditBox()" (onCreated)="afterEditTask()"></app-edit-task>
+</div>
